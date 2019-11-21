@@ -4,8 +4,8 @@
 
 class SpaceShip {
     public:
-    double xPosition = 0;
-    double yPosition = 0;
+    double xPosition = 600;
+    double yPosition = 600;
     double xVelocity = 0;
     double yVelocity = 0;
     double rotation = 0;

@@ -1,12 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include <thread>
 #include <chrono>
-#include "scene.h"
 #include "gameManager.h"
+#include <iostream>
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Space Cruiser");
-    space::GameManager Game;
+    space::GameManager gameManager;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -16,10 +16,11 @@ int main() {
             }
         }
 
-        // GameManager.updateScene(20);
-        // GameManager.drawScene(&window);
+        int sleepTime = 1000/60;
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
+        gameManager.updateScene(sleepTime);
+        gameManager.drawScene(&window);
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 
     return 0;
