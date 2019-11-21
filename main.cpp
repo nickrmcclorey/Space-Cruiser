@@ -2,12 +2,11 @@
 #include <thread>
 #include <chrono>
 #include "scene.h"
+#include "gameManager.h"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Space Cruiser");
-    sf::CircleShape shape(70);
-    shape.setFillColor(sf::Color::Magenta);
-    shape.setPosition(50, 50);
+    space::GameManager Game;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -17,12 +16,10 @@ int main() {
             }
         }
 
-        window.clear();
-        window.draw(shape);
-        window.display();
+        // GameManager.updateScene(20);
+        // GameManager.drawScene(&window);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        shape.move(40, 40);
     }
 
     return 0;
