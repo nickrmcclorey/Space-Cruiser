@@ -7,6 +7,7 @@
 int main() {
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Space Cruiser");
     space::GameManager gameManager;
+    gameManager.scene.spaceShip.position = sf::Vector2f(600, 600);
 
     while (window.isOpen()) {
         sf::Event event;

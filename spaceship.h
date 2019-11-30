@@ -4,29 +4,28 @@
 
 class SpaceShip {
     public:
-    double xPosition = 600;
-    double yPosition = 600;
-    double xVelocity = 0;
-    double yVelocity = 0;
+    sf::Vector2f position;
+    sf::Vector2f velocity;
     double rotation = 0;
     
     sf::VertexArray polygon() {
         sf::VertexArray triangle(sf::Triangles, 3);
 
-        double x = cos(3 * M_PI / 2 + rotation) * 20 + xPosition;
-        double y = sin(3 * M_PI / 2 + rotation) * 20 + yPosition;
+        double x = cos(3 * M_PI / 2 + rotation) * 20 + position.x;
+        double y = sin(3 * M_PI / 2 + rotation) * 20 + position.y;
         triangle[0].position = sf::Vector2f(x, y);
 
         // bottom right
-        x = cos(M_PI / 4 + rotation) * 20 + xPosition;
-        y = sin(M_PI / 4 + rotation) * 20 + yPosition;
+        x = cos(M_PI / 4 + rotation) * 20 + position.x;
+        y = sin(M_PI / 4 + rotation) * 20 + position.y;
         triangle[1].position = sf::Vector2f(x, y);
 
         // bottom left
-        x = cos(3 * M_PI / 4 + rotation) * 20 + xPosition;
-        y = sin(3 * M_PI / 4 + rotation) * 20 + yPosition;
+        x = cos(3 * M_PI / 4 + rotation) * 20 + position.x;
+        y = sin(3 * M_PI / 4 + rotation) * 20 + position.y;
         triangle[2].position = sf::Vector2f(x, y);
 
         return triangle;
     }
+
 };

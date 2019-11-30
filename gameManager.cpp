@@ -3,6 +3,7 @@
 #include "scene.h"
 #include "gameManager.h"
 #include "spaceship.h"
+#include "camera.h"
 
 namespace space {
 
@@ -13,26 +14,26 @@ namespace space {
     void GameManager::updateScene(int timeEllapsed) {
         SpaceShip* spaceShip = &scene.spaceShip;
         for (Planet planet : scene.planets) {
-            double dx = planet.xPosition - spaceShip->xPosition;
-            double dy = planet.yPosition - spaceShip->yPosition;
+            double dx = planet.xPosition - spaceShip->position.x;
+            double dy = planet.yPosition - spaceShip->position.y;
             double distanceSquared = pow(dx, 2) + pow(dy, 2);
             double force = planet.gravityStrength * planet.mass / distanceSquared;
             double theta = atan2(dy, dx);
             double forceX = cos(theta) * force;
             double forceY = sin(theta) * force;
-            spaceShip->xVelocity += forceX * timeEllapsed;
-            spaceShip->yVelocity += forceY * timeEllapsed;
+            spaceShip->velocity.x += forceX * timeEllapsed;
+            spaceShip->velocity.y += forceY * timeEllapsed;
 
             if (sqrt(distanceSquared) < planet.radius) {
-                spaceShip->yVelocity = 0;
-                spaceShip->xVelocity = 0;
+                spaceShip->velocity.y = 0;
+                spaceShip->velocity.x = 0;
                 return;
             }
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            spaceShip->yVelocity += cos(spaceShip->rotation) * -0.02;
-            spaceShip->xVelocity += sin(spaceShip->rotation) * 0.02;
+            spaceShip->velocity.y += cos(spaceShip->rotation) * -0.02;
+            spaceShip->velocity.x += sin(spaceShip->rotation) * 0.02;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
@@ -43,23 +44,13 @@ namespace space {
             spaceShip->rotation += M_PI / 32;
         }
 
-        spaceShip->xPosition += spaceShip->xVelocity * timeEllapsed;
-        spaceShip->yPosition += spaceShip->yVelocity * timeEllapsed;
+        spaceShip->position += spaceShip->velocity * (float)timeEllapsed;
+        // spaceShip->position.x += spaceShip->velocity.x * timeEllapsed;
+        // spaceShip->position.y += spaceShip->velocity.y * timeEllapsed;
     }
 
     void GameManager::drawScene(sf::RenderWindow* window) {
-        
-        window->clear();
-        window->draw(scene.spaceShip.polygon());
-        
-        for (Planet planet : scene.planets) {
-            sf::CircleShape shape(planet.radius);
-            shape.setFillColor(sf::Color::Green);
-            shape.setPosition(planet.xPosition - planet.radius, planet.yPosition - planet.radius);
-            window->draw(shape);
-        }
-
-        window->display();
+        camera::draw(scene, window);
     }
 
 }
