@@ -4,6 +4,7 @@
 #include "gameManager.h"
 #include "spaceship.h"
 #include "camera.h"
+#include "dynamicScene.h"
 
 namespace space {
 
@@ -14,8 +15,8 @@ namespace space {
     void GameManager::updateScene(int timeEllapsed) {
         SpaceShip* spaceShip = &scene.spaceShip;
         for (Planet planet : scene.planets) {
-            double dx = planet.xPosition - spaceShip->position.x;
-            double dy = planet.yPosition - spaceShip->position.y;
+            double dx = planet.position.x - spaceShip->position.x;
+            double dy = planet.position.y - spaceShip->position.y;
             double distanceSquared = pow(dx, 2) + pow(dy, 2);
             double force = planet.gravityStrength * planet.mass / distanceSquared;
             double theta = atan2(dy, dx);
@@ -45,8 +46,6 @@ namespace space {
         }
 
         spaceShip->position += spaceShip->velocity * (float)timeEllapsed;
-        // spaceShip->position.x += spaceShip->velocity.x * timeEllapsed;
-        // spaceShip->position.y += spaceShip->velocity.y * timeEllapsed;
     }
 
     void GameManager::drawScene(sf::RenderWindow* window) {

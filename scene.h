@@ -9,6 +9,6 @@ class Scene {
     SpaceShip spaceShip;
     std::vector<Planet> planets;
 
-    void reset();
+    virtual void reset();
     Scene();
 };

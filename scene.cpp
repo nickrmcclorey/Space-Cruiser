@@ -4,13 +4,14 @@
 #include "scene.h"
 
     
-    void Scene::reset() {
-        planets.clear();
+void Scene::reset() {
+    planets.clear();
+    spaceShip.position = sf::Vector2f(600, 600);
 
-        Planet planet(0, 0, 100);
-        planets.push_back(planet);
-    };
+    Planet planet(0, 0, 100);
+    planets.push_back(planet);
+};
 
-    Scene::Scene() {
-        this->reset();
-    }
+Scene::Scene() {
+    this->reset();
+}

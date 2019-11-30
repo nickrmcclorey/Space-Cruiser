@@ -19,7 +19,7 @@ void camera::draw(Scene scene, sf::RenderWindow* window) {
     for (Planet planet : scene.planets) {
         sf::CircleShape shape(planet.radius);
         shape.setFillColor(sf::Color::Green);
-        shape.setPosition(planet.xPosition - planet.radius, planet.yPosition - planet.radius);
+        shape.setPosition(planet.position.x - planet.radius, planet.position.y - planet.radius);
         shape.setPosition(shape.getPosition() - offset);
         window->draw(shape);
     }

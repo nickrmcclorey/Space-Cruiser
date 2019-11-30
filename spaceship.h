@@ -25,6 +25,8 @@ class SpaceShip {
         y = sin(3 * M_PI / 4 + rotation) * 20 + position.y;
         triangle[2].position = sf::Vector2f(x, y);
 
+        sf::Clock clock;
+
         return triangle;
     }
 
