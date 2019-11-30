@@ -9,12 +9,17 @@
 namespace space {
 
     GameManager::GameManager() {
+        scene = new DynamicScene();
+        scene->reset();
+    }
 
+    GameManager::~GameManager() {
+        delete scene;
     }
 
     void GameManager::updateScene(int timeEllapsed) {
-        SpaceShip* spaceShip = &scene.spaceShip;
-        for (Planet planet : scene.planets) {
+        SpaceShip* spaceShip = &scene->spaceShip;
+        for (Planet planet : scene->planets) {
             double dx = planet.position.x - spaceShip->position.x;
             double dy = planet.position.y - spaceShip->position.y;
             double distanceSquared = pow(dx, 2) + pow(dy, 2);
@@ -46,6 +51,7 @@ namespace space {
         }
 
         spaceShip->position += spaceShip->velocity * (float)timeEllapsed;
+        scene->update(spaceShip->position);
     }
 
     void GameManager::drawScene(sf::RenderWindow* window) {

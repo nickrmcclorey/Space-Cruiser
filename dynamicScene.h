@@ -4,12 +4,11 @@
 #include "SFML/Graphics.hpp"
 
 
-class DynamicScene : Scene {
+class DynamicScene : public Scene {
     public:
-        void updateQuadrant(sf::Vector2f position);
-        void reset();
+        virtual void update(sf::Vector2f position);
+        virtual void reset();
     private:
-        std::vector<Planet> quadrants[3][3];
         sf::Vector2i currentQuadrant;
         std::vector<Planet> planetsInQuadrant(sf::Vector2i quadrant);
         void refresh();

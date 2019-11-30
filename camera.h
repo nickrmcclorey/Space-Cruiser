@@ -3,5 +3,5 @@
 #include <SFML/Graphics.hpp>
 
 namespace camera {
-    void draw(Scene scene, sf::RenderWindow* window);
+    void draw(Scene* scene, sf::RenderWindow* window);
 }

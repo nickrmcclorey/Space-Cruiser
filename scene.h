@@ -10,5 +10,6 @@ class Scene {
     std::vector<Planet> planets;
 
     virtual void reset();
+    virtual void update(sf::Vector2f position);
     Scene();
 };
