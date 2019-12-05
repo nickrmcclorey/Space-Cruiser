@@ -7,7 +7,7 @@ class Planet {
     int radius;
     double mass;
     sf::Color color;
-    const double gravityStrength = 0.05;
+    const double gravityStrength = 0.1;
 
     Planet(int x, int y, int rad) {
         position.x = x;
