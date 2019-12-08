@@ -23,6 +23,4 @@ void camera::draw(Scene* scene, sf::RenderWindow* window) {
         shape.setPosition(shape.getPosition() - offset);
         window->draw(shape);
     }
-
-    window->display();
 }
