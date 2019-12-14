@@ -2,22 +2,29 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
-sf::Text Menu::createText(const sf::Font font, std::string stringText, int xPosition) {
-    sf::Text text;
-    text.setFillColor(sf::Color::White);
-    text.setString(stringText);
-    text.setFont(font);
-    text.setPosition(xPosition, 5);
+sf::Text* Menu::createText(std::string stringText, int xPosition) {
+    sf::Text *text = new sf::Text(stringText, font);
+    text->setFillColor(sf::Color::Black);
+    text->setPosition(xPosition, 5);
+    text->setScale(0.6, 0.6);
+
     return text;
 }
 
 void Menu::draw(sf::RenderWindow *window) {
+    sf::RectangleShape menuBar;
+    menuBar.setPosition(0, 0);
+    menuBar.setSize(sf::Vector2f(1920, 30));
+    menuBar.setFillColor(sf::Color::White);
     sf::Text text;
-    text.setFillColor(sf::Color::White);
+    text.setFillColor(sf::Color::Black);
     text.setString("Restart");
     text.setFont(font);
+    text.setScale(0.6, 0.6);
     text.setPosition(5, 5);
-    window->draw(text);
+    window->draw(menuBar);
+    window->draw(*menuItems[0]);
+
 }
 
 Menu::Menu() {
@@ -26,5 +33,11 @@ Menu::Menu() {
         throw errorMessage;
     }
 
-    menuItems.push_back(createText(font, "Restart", 5));
+    menuItems.push_back(createText("Restart", 5));
+}
+
+Menu::~Menu() {
+    for (int k = 0; k < menuItems.size(); k++) {
+        delete menuItems[k];
+    }
 }

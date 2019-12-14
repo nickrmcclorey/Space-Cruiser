@@ -10,7 +10,7 @@ gameManager.o : gameManager.cpp gameManager.h scene.h spaceship.h camera.h plane
 scene.o : scene.cpp scene.h spaceship.h planet.h
 	g++ -std=c++17 -c scene.cpp
 
-camera.o : camera.cpp camera.h scene.h
+camera.o : camera.cpp camera.h scene.h planet.h
 	g++ -std=c++17 -c camera.cpp
 
 dynamicScene.o : dynamicScene.cpp dynamicScene.h scene.h planet.h

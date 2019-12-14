@@ -35,6 +35,7 @@ namespace space {
                 spaceShip->velocity.x = 0;
                 return;
             }
+
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {

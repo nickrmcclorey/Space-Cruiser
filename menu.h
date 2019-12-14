@@ -5,9 +5,10 @@ class Menu {
 	public:
 		void draw(sf::RenderWindow *window);
 		Menu();
+		~Menu();
 	private:
-		std::vector<sf::Text> menuItems;
+		std::vector<sf::Text *> menuItems;
 		sf::Font font;
 
-		sf::Text createText(const sf::Font font, std::string stringText, int xPosition);
+		sf::Text* createText(std::string stringText, int xPosition);
 };
