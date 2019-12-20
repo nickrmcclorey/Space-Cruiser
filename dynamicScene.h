@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include "scene.h"
 #include "planet.h"

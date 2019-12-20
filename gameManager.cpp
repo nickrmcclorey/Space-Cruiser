@@ -5,6 +5,11 @@
 #include "spaceship.h"
 #include "camera.h"
 #include "dynamicScene.h"
+#include "menu.h"
+
+#define getMagnitude(distance) (pow(distance.x, 2) + pow(distance.y, 2));
+
+#define keyIsPressed(key) (sf::Keyboard::isKeyPressed(key))
 
 namespace space {
 
@@ -17,25 +22,34 @@ namespace space {
         delete scene;
     }
 
-    void GameManager::updateScene(int timeEllapsed) {
+    void GameManager::updateScene(int secondsEllapsed) {
+        
+        if (keyIsPressed(sf::Keyboard::R)) {
+            scene->reset();
+        } else {
+            updateSpaceship(secondsEllapsed);
+            scene->update(scene->spaceShip.position);
+        }
+    }
+
+    void GameManager::updateSpaceship(int secondsEllapsed) {
         SpaceShip* spaceShip = &scene->spaceShip;
+
         for (Planet planet : scene->planets) {
-            double dx = planet.position.x - spaceShip->position.x;
-            double dy = planet.position.y - spaceShip->position.y;
-            double distanceSquared = pow(dx, 2) + pow(dy, 2);
+            sf::Vector2f distance = planet.position - spaceShip->position;
+            double distanceSquared = getMagnitude(distance);
             double force = planet.gravityStrength * planet.mass / distanceSquared;
-            double theta = atan2(dy, dx);
+            double theta = atan2(distance.y, distance.x);
             double forceX = cos(theta) * force;
             double forceY = sin(theta) * force;
-            spaceShip->velocity.x += forceX * timeEllapsed;
-            spaceShip->velocity.y += forceY * timeEllapsed;
+            spaceShip->velocity.x += forceX * secondsEllapsed;
+            spaceShip->velocity.y += forceY * secondsEllapsed;
 
             if (sqrt(distanceSquared) < planet.radius) {
                 spaceShip->velocity.y = 0;
                 spaceShip->velocity.x = 0;
                 return;
             }
-
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
@@ -51,12 +65,12 @@ namespace space {
             spaceShip->rotation += M_PI / 32;
         }
 
-        spaceShip->position += spaceShip->velocity * (float)timeEllapsed;
-        scene->update(spaceShip->position);
+        spaceShip->position += spaceShip->velocity * (float)secondsEllapsed;
     }
 
     void GameManager::drawScene(sf::RenderWindow* window) {
         camera::draw(scene, window);
-    }
+        menu.draw(window);
 
+    }
 }

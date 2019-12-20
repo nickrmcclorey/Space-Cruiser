@@ -28,7 +28,7 @@ void Menu::draw(sf::RenderWindow *window) {
 }
 
 Menu::Menu() {
-    if (!font.loadFromFile("college.ttf")) {
+    if (!font.loadFromFile("hack.ttf")) {
         std::string errorMessage = "Failed to load ttf file. :(";
         throw errorMessage;
     }

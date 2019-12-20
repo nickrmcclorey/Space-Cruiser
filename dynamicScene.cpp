@@ -28,6 +28,13 @@ void DynamicScene::update(sf::Vector2f position) {
 
 void DynamicScene::reset() {
     refresh();
+    Astroid astroid;
+    astroid.position = sf::Vector2f(20, 20);
+    astroid.velocity = sf::Vector2f(0, 0);
+    astroid.rotation = 0;
+    astroids.push_back(astroid);
+    spaceShip.position = sf::Vector2f(0, 0);
+    spaceShip.velocity = sf::Vector2f(0, 0);
 }
 
 bool planetsIntersect(Planet planet, std::vector<Planet> planetList) {
@@ -45,10 +52,8 @@ bool planetsIntersect(Planet planet, std::vector<Planet> planetList) {
 std::vector<Planet> DynamicScene::planetsInQuadrant(sf::Vector2i quadrant) {
 
     std::minstd_rand0 generator (quadrant.x + quadrant.y * 10);
-    // std::uniform_int_distribution<int> numPlanetsGenerator(1, 6);
     std::uniform_int_distribution<int> planetPositioner(1, quadrantWidth);
     std::normal_distribution<float> planetSize(100, 20);
-    // int numPlanets = numPlanetsGenerator(generator);
 
     std::vector<Planet> planets;
     for (int k = 0; k < 7; k++) {
