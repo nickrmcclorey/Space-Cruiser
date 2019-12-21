@@ -13,7 +13,7 @@ scene.o : scene.cpp scene.h spaceship.h planet.h astroid.h
 camera.o : camera.cpp camera.h scene.h planet.h
 	g++ -std=c++17 -c camera.cpp
 
-dynamicScene.o : dynamicScene.cpp dynamicScene.h scene.h planet.h
+dynamicScene.o : dynamicScene.cpp dynamicScene.h scene.h planet.h astroid.h
 	g++ -std=c++17 -c dynamicScene.cpp
 
 menu.o : menu.h menu.cpp

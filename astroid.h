@@ -4,20 +4,13 @@
 #include <time.h>
 #include <math.h>
 
-class Astroid {
+class Astroid : public sf::ConvexShape {
     public:
-        sf::Vector2f position;
-        sf::Vector2f velocity;
-        sf::ConvexShape shape;
-        double rotation;
         const int pointCount = 8;
+        sf::Vector2f velocity;
 
-        sf::ConvexShape getShape() {
-            return shape;
-        }
-
-        Astroid() {
-            shape.setPointCount(pointCount);
+        Astroid () : sf::ConvexShape () {
+            setPointCount(pointCount);
             std::minstd_rand0 generator(time(0));
             std::uniform_int_distribution<int> distanceDistribution(5, 25);
 
@@ -26,7 +19,8 @@ class Astroid {
                 int distance = distanceDistribution(generator);
                 double y = sin(theta) * distance;
                 double x = cos(theta) * distance;
-                shape.setPoint(k, sf::Vector2f(x, y));
+                setPoint(k, sf::Vector2f(x, y));
             }
         }
+
 };

@@ -7,16 +7,15 @@ namespace space {
 
     class GameManager {
         public:
-            Scene* scene;
-            Menu menu;
-            
             void updateScene(int secondsEllapsed);
-            void drawScene(sf::RenderWindow* window);
+            void drawToWindow(sf::RenderWindow* window);
             GameManager();
             ~GameManager();
 
         private:
-            void updateSpaceship(int secondsEllapsed);
+            Scene* scene;
+            Menu menu;
+            sf::View view;
     };
 
 }

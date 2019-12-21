@@ -7,12 +7,15 @@
 
 class Scene {
     public:
-        double gravity;
         SpaceShip spaceShip;
         std::vector<Planet> planets;
         std::list<Astroid> astroids;
 
         virtual void reset();
-        virtual void update(sf::Vector2f position);
+        virtual void update(int secondsEllapsed);
+        void drawToWindow(sf::RenderWindow* window);
         Scene();
+
+    protected:
+        void updateSpaceShip(int secondsEllapsed);
 };

@@ -11,7 +11,7 @@ sf::Text* Menu::createText(std::string stringText, int xPosition) {
     return text;
 }
 
-void Menu::draw(sf::RenderWindow *window) {
+void Menu::drawToWindow(sf::RenderWindow *window) {
     sf::RectangleShape menuBar;
     menuBar.setPosition(0, 0);
     menuBar.setSize(sf::Vector2f(1920, 30));

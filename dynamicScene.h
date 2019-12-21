@@ -7,7 +7,7 @@
 
 class DynamicScene : public Scene {
     public:
-        virtual void update(sf::Vector2f position);
+        virtual void update(int secondsEllapsed);
         virtual void reset();
     private:
         const int quadrantWidth = 2000;

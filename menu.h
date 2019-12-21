@@ -4,7 +4,7 @@
 
 class Menu {
 	public:
-		void draw(sf::RenderWindow *window);
+		void drawToWindow(sf::RenderWindow *window);
 		Menu();
 		~Menu();
 	private:

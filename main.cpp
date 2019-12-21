@@ -23,9 +23,8 @@ int main() {
         const int sleepTime = 1000/60;
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
         gameManager.updateScene(clock.getElapsedTime().asMilliseconds());
-        gameManager.drawScene(&window);
+        gameManager.drawToWindow(&window);
 
-        window.display();
         clock.restart();
     }
 

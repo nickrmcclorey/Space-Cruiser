@@ -5,18 +5,20 @@
 #include "planet.h"
 #include <random>
 #include <math.h>
+#include "astroid.h"
 
-void DynamicScene::update(sf::Vector2f position) {
-    
-    sf::Vector2i newQuadrant((int)position.x, (int)position.y);
+void DynamicScene::update(int secondsEllapsed) {
+    updateSpaceShip(secondsEllapsed);
+
+    sf::Vector2i newQuadrant((int)spaceShip.position.x, (int)spaceShip.position.y);
     newQuadrant.x /= quadrantWidth;
     newQuadrant.y /= quadrantWidth;
     
-    if (position.x < 0) {
+    if (spaceShip.position.x < 0) {
         newQuadrant.x--;
     };
 
-    if (position.y < 0) {
+    if (spaceShip.position.y < 0) {
         newQuadrant.y--;
     }
 
@@ -29,9 +31,7 @@ void DynamicScene::update(sf::Vector2f position) {
 void DynamicScene::reset() {
     refresh();
     Astroid astroid;
-    astroid.position = sf::Vector2f(20, 20);
-    astroid.velocity = sf::Vector2f(0, 0);
-    astroid.rotation = 0;
+    astroid.setPosition(20, 20);
     astroids.push_back(astroid);
     spaceShip.position = sf::Vector2f(0, 0);
     spaceShip.velocity = sf::Vector2f(0, 0);
