@@ -9,6 +9,8 @@ class DynamicScene : public Scene {
     public:
         virtual void update(int secondsEllapsed);
         virtual void reset();
+        void addAstroid();
+
     private:
         const int quadrantWidth = 2000;
         sf::Vector2i currentQuadrant;

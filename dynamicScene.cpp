@@ -9,6 +9,7 @@
 
 void DynamicScene::update(int secondsEllapsed) {
     updateSpaceShip(secondsEllapsed);
+    updateAstroids(secondsEllapsed);
 
     sf::Vector2i newQuadrant((int)spaceShip.position.x, (int)spaceShip.position.y);
     newQuadrant.x /= quadrantWidth;
@@ -30,9 +31,7 @@ void DynamicScene::update(int secondsEllapsed) {
 
 void DynamicScene::reset() {
     refresh();
-    Astroid astroid;
-    astroid.setPosition(20, 20);
-    astroids.push_back(astroid);
+    astroids.clear();
     spaceShip.position = sf::Vector2f(0, 0);
     spaceShip.velocity = sf::Vector2f(0, 0);
 }
@@ -81,5 +80,17 @@ void DynamicScene::refresh() {
             }
         }
     }
+}
 
+void DynamicScene::addAstroid() {
+    static std::minstd_rand0 generator;
+    std::uniform_int_distribution<int> astroidPositioner(-1920 * 3 / 2, 1920 * 3 / 2);
+    std::normal_distribution<float> velocity(0.f, 0.5);
+
+    int x = astroidPositioner(generator);
+    int y = astroidPositioner(generator);
+    Astroid astroid;
+    astroid.setPosition(x, y);
+    astroid.velocity = sf::Vector2f(velocity(generator), velocity(generator));
+    astroids.push_back(astroid);
 }

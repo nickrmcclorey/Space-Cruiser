@@ -1,5 +1,5 @@
 Space_Cruiser : main.o gameManager.o scene.o camera.o dynamicScene.o menu.o
-	g++ -std=c++17 camera.o scene.o main.o menu.o dynamicScene.o gameManager.o -lsfml-graphics -lsfml-window -lsfml-system -o space_cruiser
+	g++ -std=c++17 camera.o scene.o main.o menu.o dynamicScene.o gameManager.o -lsfml-graphics -lsfml-window -lsfml-system -pthread -o space_cruiser
 
 main.o : main.cpp gameManager.h
 	g++ -std=c++17 -c main.cpp -lsfml-graphics -lsfml-window -lsfml-system

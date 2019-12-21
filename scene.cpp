@@ -17,6 +17,7 @@ void Scene::reset() {
 
 void Scene::update(int secondsEllapsed) {
     updateSpaceShip(secondsEllapsed);
+    updateAstroids(secondsEllapsed);
 }
 
 void Scene::updateSpaceShip(int secondsEllapsed) {
@@ -52,6 +53,13 @@ void Scene::updateSpaceShip(int secondsEllapsed) {
         }
 
         spaceShip.position += spaceShip.velocity * (float)secondsEllapsed;
+}
+
+void Scene::updateAstroids(int time) {
+    for (int k = 0; k < astroids.size(); k++) {
+        astroids[k].move(astroids[k].velocity * (float)time);
+        // astroid.setPosition(0, 0);
+    }
 }
 
 void Scene::drawToWindow(sf::RenderWindow* window) {
