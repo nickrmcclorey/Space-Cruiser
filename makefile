@@ -7,7 +7,7 @@ main.o : main.cpp gameManager.h
 gameManager.o : gameManager.cpp gameManager.h scene.h spaceship.h planet.h dynamicScene.h menu.h
 	g++ -std=c++17 -c gameManager.cpp -lsfml-graphics -lsfml-window -lsfml-system
 
-scene.o : scene.cpp scene.h spaceship.h planet.h astroid.h
+scene.o : scene.cpp scene.h spaceship.h planet.h astroid.h collision.h
 	g++ -std=c++17 -c scene.cpp
 
 dynamicScene.o : dynamicScene.cpp dynamicScene.h scene.h planet.h astroid.h

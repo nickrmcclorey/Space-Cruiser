@@ -1,6 +1,5 @@
 #include <vector>
 #include <math.h>
-#include <iostream>
 #include "SFML/Graphics.hpp"
 #include "dynamicScene.h"
 #include "scene.h"
@@ -37,7 +36,6 @@ void DynamicScene::update(int secondsEllapsed) {
         if (abs(distance.x) > quadrantWidth * 3 / 2 || abs(distance.y) > quadrantWidth * 3 / 2) {
             astroids.erase(astroids.begin() + k);
             k--;
-            std::cout << "astroid count: " << astroids.size() << std::endl;
         }
     }
     astroidMutex.unlock();

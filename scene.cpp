@@ -4,10 +4,6 @@
 #include "scene.h"
 #include "collision.h"
 
-#define getDistanceSquared(distance) (pow(distance.x, 2) + pow(distance.y, 2));
-
-#define distanceBetween(obj1, obj2) (sqrt(pow(obj1.x - obj2.x, 2) + pow(obj2.x - obj2.y, 2)))
-
 #define getMagnitude(distance) (sqrt(pow(distance.x, 2) + pow(distance.y, 2)));
 
 #define keyIsPressed(key) (sf::Keyboard::isKeyPressed(key))
@@ -29,15 +25,15 @@ void Scene::updateSpaceship(int secondsEllapsed) {
 
         for (Planet planet : planets) {
             sf::Vector2f distance = planet.position - spaceship.position;
-            double distanceSquared = getDistanceSquared(distance);
+            double distanceSquared = getDistanceSquared(planet.position, spaceship.position);
+            double magnitude = sqrt(distanceSquared);
             double force = planet.gravityStrength * planet.mass / distanceSquared;
-            double theta = atan2(distance.y, distance.x);
-            double forceX = cos(theta) * force;
-            double forceY = sin(theta) * force;
+            double forceX = force * distance.x / magnitude;
+            double forceY = force * distance.y  / magnitude;
             spaceship.velocity.x += forceX * secondsEllapsed;
             spaceship.velocity.y += forceY * secondsEllapsed;
 
-            if (sqrt(distanceSquared) < planet.radius) {
+            if (Collision::shapeIntersectsCircle(spaceship.polygon(), planet.position, planet.radius)) {
                 spaceship.velocity.y = 0;
                 spaceship.velocity.x = 0;
                 return;
@@ -62,9 +58,7 @@ void Scene::updateSpaceship(int secondsEllapsed) {
         
         astroidMutex.lock();
         for (Astroid astroid : astroids) {
-            sf::ConvexShape spaceshipShape = spaceship.polygon();
-            auto spaceShipPosition = spaceship.position;
-            if (distanceBetween(spaceship.position, spaceShipPosition) < 20 && Collision::shapesIntersect(&astroid, &spaceshipShape)) {
+            if (distanceBetween(spaceship.position, astroid.getPosition()) < 20 && Collision::shapesIntersect(astroid, spaceship.polygon())) {
                 spaceship.velocity = sf::Vector2f(0, 0);
             }
         }
@@ -74,19 +68,16 @@ void Scene::updateSpaceship(int secondsEllapsed) {
 void Scene::updateAstroids(int time) {
     astroidMutex.lock();
     for (int k = 0; k < astroids.size(); k++) {
-        astroids[k].move(astroids[k].velocity * (float)time);
 
         for (Planet planet : planets) {
-            auto distance = planet.position - astroids[k].getPosition();
-            int magnitude = getMagnitude(distance);
-
-            if (magnitude < planet.radius) {
+            if (Collision::shapeIntersectsCircle(astroids[k], planet.position, planet.radius)) {
                 astroids.erase(astroids.begin() + k);
                 k--;
                 break;
             }
         }
 
+        astroids[k].move(astroids[k].velocity * (float)time);
     }
     astroidMutex.unlock();
 }
