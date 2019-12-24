@@ -21,7 +21,6 @@ namespace space {
             sf::View view;
             GameState gameState;
 
-            void updateScene(int secondsEllapsed);
             void drawToWindow(sf::RenderWindow* window);
             void updateGameState();
 

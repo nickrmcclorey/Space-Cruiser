@@ -6,7 +6,7 @@
 
 class Astroid : public sf::ConvexShape {
     public:
-        const int pointCount = 8;
+        static const int pointCount = 8;
         sf::Vector2f velocity;
 
         Astroid () : sf::ConvexShape () {

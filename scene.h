@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #include <vector>
 #include "planet.h"
 #include "spaceship.h"
@@ -7,9 +8,10 @@
 
 class Scene {
     public:
-        SpaceShip spaceShip;
+        Spaceship spaceship;
         std::vector<Planet> planets;
         std::vector<Astroid> astroids;
+        std::mutex astroidMutex;
 
         virtual void reset();
         virtual void update(int secondsEllapsed);
@@ -18,6 +20,6 @@ class Scene {
         Scene();
 
     protected:
-        void updateSpaceShip(int secondsEllapsed);
+        void updateSpaceship(int secondsEllapsed);
         void updateAstroids(int time);
 };

@@ -1,25 +1,26 @@
 #include <vector>
+#include <math.h>
+#include <iostream>
 #include "SFML/Graphics.hpp"
 #include "dynamicScene.h"
 #include "scene.h"
 #include "planet.h"
 #include <random>
-#include <math.h>
 #include "astroid.h"
 
 void DynamicScene::update(int secondsEllapsed) {
-    updateSpaceShip(secondsEllapsed);
+    updateSpaceship(secondsEllapsed);
     updateAstroids(secondsEllapsed);
 
-    sf::Vector2i newQuadrant((int)spaceShip.position.x, (int)spaceShip.position.y);
+    sf::Vector2i newQuadrant((int)spaceship.position.x, (int)spaceship.position.y);
     newQuadrant.x /= quadrantWidth;
     newQuadrant.y /= quadrantWidth;
     
-    if (spaceShip.position.x < 0) {
+    if (spaceship.position.x < 0) {
         newQuadrant.x--;
     };
 
-    if (spaceShip.position.y < 0) {
+    if (spaceship.position.y < 0) {
         newQuadrant.y--;
     }
 
@@ -27,13 +28,28 @@ void DynamicScene::update(int secondsEllapsed) {
         currentQuadrant = newQuadrant;
         refresh();
     }
+
+    updateAstroids(secondsEllapsed);
+    // astroids that wander too far from the spaceship.position get deleted
+    astroidMutex.lock();
+    for (int k = 0; k < astroids.size(); k++) {
+        auto distance = spaceship.position - astroids[k].getPosition();
+        if (abs(distance.x) > quadrantWidth * 3 / 2 || abs(distance.y) > quadrantWidth * 3 / 2) {
+            astroids.erase(astroids.begin() + k);
+            k--;
+            std::cout << "astroid count: " << astroids.size() << std::endl;
+        }
+    }
+    astroidMutex.unlock();
 }
 
 void DynamicScene::reset() {
     refresh();
+    astroidMutex.lock();
     astroids.clear();
-    spaceShip.position = sf::Vector2f(0, 0);
-    spaceShip.velocity = sf::Vector2f(0, 0);
+    astroidMutex.unlock();
+    spaceship.position = sf::Vector2f(0, 0);
+    spaceship.velocity = sf::Vector2f(0, 0);
 }
 
 bool planetsIntersect(Planet planet, std::vector<Planet> planetList) {
@@ -84,13 +100,24 @@ void DynamicScene::refresh() {
 
 void DynamicScene::addAstroid() {
     static std::minstd_rand0 generator;
-    std::uniform_int_distribution<int> astroidPositioner(-1920 * 3 / 2, 1920 * 3 / 2);
-    std::normal_distribution<float> velocity(0.f, 0.5);
+    std::uniform_int_distribution<int> uniformDist(0, 500);
+    std::normal_distribution<float> normalDist(0.f, 0.5);
 
-    int x = astroidPositioner(generator);
-    int y = astroidPositioner(generator);
     Astroid astroid;
+    int x = uniformDist(generator) + (quadrantWidth / 2);
+    int y = uniformDist(generator) + (quadrantWidth / 2);
+    x *= (x % 2 == 0) ? 1 : -1;
+    y *= (y % 2 == 0) ? 1 : -1;
     astroid.setPosition(x, y);
-    astroid.velocity = sf::Vector2f(velocity(generator), velocity(generator));
+    astroid.move(spaceship.position);
+
+    auto distance = spaceship.position - astroid.getPosition();
+    sf::Vector2f velocity(normalDist(generator), normalDist(generator));
+    velocity.x = (distance.x > 0) ? abs(velocity.x) : -1 * abs(velocity.x);
+    velocity.y = (distance.y > 0) ? abs(velocity.y) : -1 * abs(velocity.y);
+    astroid.velocity = velocity;
+
+    astroidMutex.lock();
     astroids.push_back(astroid);
+    astroidMutex.unlock();
 }

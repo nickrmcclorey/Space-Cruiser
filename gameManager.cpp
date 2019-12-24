@@ -1,17 +1,29 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <thread>
-#include <iostream>
 #include "scene.h"
 #include "gameManager.h"
 #include "spaceship.h"
-#include "camera.h"
 #include "dynamicScene.h"
 #include "menu.h"
 
 #define keyIsPressed(key) (sf::Keyboard::isKeyPressed(key))
 
+
 namespace space {
+
+
+    void updateScene(Scene* scene, int time, GameState gameState) {
+        if (gameState == GameState::Paused) {
+            return;
+        }
+        
+        if (keyIsPressed(sf::Keyboard::R)) {
+            scene->reset();
+        } else {
+            scene->update(time);
+        }
+    }
 
     void spawnAstroids(Scene* scene, GameState* gameState) {
 
@@ -24,14 +36,11 @@ namespace space {
         while (*gameState != GameState::Closing) {
             std::this_thread::sleep_for(std::chrono::milliseconds(1000/6));
             if (std::chrono::system_clock::now() > nextAstroidSpawnTime) {
-                //spawn astroid
                 scene->addAstroid();
-                std::cout << "spawned astroid" << std::endl;
                 // set up next time interval
                 std::chrono::duration<double> nextAstroid(distribution(generator));
                 nextAstroidSpawnTime = (std::chrono::system_clock::now() + nextAstroid);
             }
-
         }
     }
 
@@ -62,13 +71,12 @@ namespace space {
             }
 
             const int sleepTime = 1000/60;
-            std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-
-            updateGameState();
-            updateScene(clock.getElapsedTime().asMilliseconds());
-            drawToWindow(&window);
-
+            std::thread sceneUpdater(updateScene, scene, clock.getElapsedTime().asMilliseconds(), gameState);
             clock.restart();
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
+            sceneUpdater.join();
+
+            drawToWindow(&window);
         }
 
         gameState = GameState::Closing;
@@ -76,32 +84,22 @@ namespace space {
     }
 
     void GameManager::updateGameState() {
-        if (keyIsPressed(sf::Keyboard::Escape)) {
+        static bool escapeKeyDown = false;
+        if (keyIsPressed(sf::Keyboard::Escape) && !escapeKeyDown) {
             if (gameState == GameState::Paused) {
                 gameState = GameState::Active;
-            } else if (gameState == GameState::Active) {
+            } else if (gameState == GameState::Active && !escapeKeyDown) {
                 gameState = GameState::Paused;
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
             }
         }
-    }
-
-    void GameManager::updateScene(int secondsEllapsed) {
-        
-        if (gameState == GameState::Paused) {
-            return;
-        }
-        
-        if (keyIsPressed(sf::Keyboard::R)) {
-            scene->reset();
-        } else {
-            scene->update(secondsEllapsed);
-        }
+        escapeKeyDown = keyIsPressed(sf::Keyboard::Escape);
     }
 
     void GameManager::drawToWindow(sf::RenderWindow* window) {
         window->clear();
 
-        view.setCenter(scene->spaceShip.position);
+        view.setCenter(scene->spaceship.position);
         window->setView(view);
         scene->drawToWindow(window);
 
