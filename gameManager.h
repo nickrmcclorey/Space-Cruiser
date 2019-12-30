@@ -7,7 +7,7 @@
 
 namespace space {
     
-    enum GameState {Active, Paused, Closing};
+    enum GameState {Active, Paused, GameOver, Closing};
 
     class GameManager {
         public:
@@ -22,7 +22,7 @@ namespace space {
             GameState gameState;
 
             void drawToWindow(sf::RenderWindow* window);
-            void updateGameState();
+            GameState updateGameState();
 
     };
 

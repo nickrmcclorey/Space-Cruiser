@@ -14,7 +14,7 @@ namespace space {
 
 
     void updateScene(Scene* scene, int time, GameState gameState) {
-        if (gameState == GameState::Paused) {
+        if (gameState != GameState::Active) {
             return;
         }
         
@@ -70,30 +70,48 @@ namespace space {
                 }
             }
 
-            const int sleepTime = 1000/60;
-            std::thread sceneUpdater(updateScene, scene, clock.getElapsedTime().asMilliseconds(), gameState);
-            clock.restart();
-            std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-            sceneUpdater.join();
+            gameState = updateGameState();
+            if (gameState == GameState::Active) {
+                std::thread sceneUpdater(updateScene, scene, clock.getElapsedTime().asMilliseconds(), gameState);
+                clock.restart();
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000/60));
+                sceneUpdater.join();
 
-            drawToWindow(&window);
+                drawToWindow(&window);
+            } else {
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000/60));
+                drawToWindow(&window);
+                clock.restart();
+            }
         }
 
         gameState = GameState::Closing;
         astroidSpawner.join();
     }
 
-    void GameManager::updateGameState() {
+    GameState GameManager::updateGameState() {
+        if (keyIsPressed(sf::Keyboard::R)) {
+            scene->reset();
+            scene->spaceship.destroyed = false;
+            return GameState::Active;
+        }
+
+        if (scene->spaceship.destroyed) {
+            return GameState::GameOver;
+        }
+
         static bool escapeKeyDown = false;
         if (keyIsPressed(sf::Keyboard::Escape) && !escapeKeyDown) {
+            escapeKeyDown = keyIsPressed(sf::Keyboard::Escape);
             if (gameState == GameState::Paused) {
-                gameState = GameState::Active;
-            } else if (gameState == GameState::Active && !escapeKeyDown) {
-                gameState = GameState::Paused;
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                return gameState = GameState::Active;
+            } else if (gameState == GameState::Active) {
+                return gameState = GameState::Paused;
             }
         }
+
         escapeKeyDown = keyIsPressed(sf::Keyboard::Escape);
+        return gameState;
     }
 
     void GameManager::drawToWindow(sf::RenderWindow* window) {
@@ -107,6 +125,10 @@ namespace space {
         menu.drawToWindow(window);
 
         window->display();
+
+        // if (gameState == GameState::GameOver) {
+        //     // draw game over sign
+        // }
     }
 
 }

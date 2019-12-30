@@ -7,6 +7,7 @@ class Spaceship {
     sf::Vector2f position;
     sf::Vector2f velocity;
     double rotation = 0;
+    bool destroyed = false;
     
     sf::ConvexShape polygon() {
         sf::ConvexShape triangle;

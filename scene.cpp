@@ -36,6 +36,7 @@ void Scene::updateSpaceship(int secondsEllapsed) {
             if (Collision::shapeIntersectsCircle(spaceship.polygon(), planet.position, planet.radius)) {
                 spaceship.velocity.y = 0;
                 spaceship.velocity.x = 0;
+                spaceship.destroyed = true;
                 return;
             }
         }
@@ -60,6 +61,7 @@ void Scene::updateSpaceship(int secondsEllapsed) {
         for (Astroid astroid : astroids) {
             if (distanceBetween(spaceship.position, astroid.getPosition()) < 20 && Collision::shapesIntersect(astroid, spaceship.polygon())) {
                 spaceship.velocity = sf::Vector2f(0, 0);
+                spaceship.destroyed = true;
             }
         }
         astroidMutex.unlock();
@@ -78,6 +80,7 @@ void Scene::updateAstroids(int time) {
         }
 
         astroids[k].move(astroids[k].velocity * (float)time);
+        // astroids[k].rotate(0.5);
     }
     astroidMutex.unlock();
 }
