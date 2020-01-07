@@ -7,9 +7,9 @@
 #include <random>
 #include "astroid.h"
 
-void DynamicScene::update(int secondsEllapsed) {
-    updateSpaceship(secondsEllapsed);
-    updateAstroids(secondsEllapsed);
+void DynamicScene::update(int time) {
+    updateSpaceship(time);
+    updateAstroids(time);
 
     sf::Vector2i newQuadrant((int)spaceship.position.x, (int)spaceship.position.y);
     newQuadrant.x /= quadrantWidth;
@@ -28,7 +28,7 @@ void DynamicScene::update(int secondsEllapsed) {
         refresh();
     }
 
-    updateAstroids(secondsEllapsed);
+    updateAstroids(time);
     // astroids that wander too far from the spaceship.position get deleted
     astroidMutex.lock();
     for (int k = 0; k < astroids.size(); k++) {

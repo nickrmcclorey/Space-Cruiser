@@ -20,6 +20,7 @@ namespace space {
             Menu menu;
             sf::View view;
             GameState gameState;
+			IControls *controls;
 
             void drawToWindow(sf::RenderWindow* window);
             GameState updateGameState();

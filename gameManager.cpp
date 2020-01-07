@@ -6,6 +6,7 @@
 #include "spaceship.h"
 #include "dynamicScene.h"
 #include "menu.h"
+#include "controls/ClientControls.h"
 
 #define keyIsPressed(key) (sf::Keyboard::isKeyPressed(key))
 
@@ -48,6 +49,7 @@ namespace space {
         scene = new DynamicScene();
         scene->reset();
         view.setSize(1920, 1080);
+		controls = new ClientControls();
     }
 
     GameManager::~GameManager() {
@@ -72,7 +74,7 @@ namespace space {
 
             gameState = updateGameState();
             if (gameState == GameState::Active) {
-                std::thread sceneUpdater(updateScene, scene, clock.getElapsedTime().asMilliseconds(), gameState);
+                std::thread sceneUpdater(updateScene, scene, 1000/60, gameState);
                 clock.restart();
                 std::this_thread::sleep_for(std::chrono::milliseconds(1000/60));
                 sceneUpdater.join();

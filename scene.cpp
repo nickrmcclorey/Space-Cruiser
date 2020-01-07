@@ -67,6 +67,10 @@ void Scene::updateSpaceship(int secondsEllapsed) {
         astroidMutex.unlock();
 }
 
+void Scene::addSpaceship(Spaceship ship) {
+	spaceships.push_back(ship);	
+}
+
 void Scene::updateAstroids(int time) {
     astroidMutex.lock();
     for (int k = 0; k < astroids.size(); k++) {

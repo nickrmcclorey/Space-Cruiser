@@ -1,5 +1,5 @@
-Space_Cruiser : main.o gameManager.o scene.o dynamicScene.o menu.o collision.o
-	g++ -std=c++17 scene.o main.o menu.o dynamicScene.o collision.o gameManager.o -lsfml-graphics -lsfml-window -lsfml-system -pthread -o space_cruiser
+Space_Cruiser : main.o gameManager.o scene.o dynamicScene.o menu.o collision.o controls.o
+	g++ -std=c++17 scene.o main.o menu.o dynamicScene.o collision.o gameManager.o controls.o -lsfml-graphics -lsfml-window -lsfml-system -pthread -o space_cruiser
 
 main.o : main.cpp gameManager.h
 	g++ -std=c++17 -c main.cpp -lsfml-graphics -lsfml-window -lsfml-system
@@ -18,6 +18,9 @@ collision.o : collision.h collision.cpp
 
 menu.o : menu.h menu.cpp
 	g++ -std=c++17 -c menu.cpp
+
+controls.o : controls/*
+	g++ -std=c++17 -c controls.cpp -o controls.o
 
 clean:
 	rm *.o space_cruiser
