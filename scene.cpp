@@ -6,8 +6,6 @@
 
 #define getMagnitude(distance) (sqrt(pow(distance.x, 2) + pow(distance.y, 2)));
 
-#define keyIsPressed(key) (sf::Keyboard::isKeyPressed(key))
-
 void Scene::reset() {
     planets.clear();
     spaceship.velocity = sf::Vector2f(0, 0);
@@ -41,22 +39,21 @@ void Scene::updateSpaceship(int secondsEllapsed) {
             }
         }
 
-        if (keyIsPressed(sf::Keyboard::W)) {
+        if (spaceship.controls->forward()) {
             spaceship.velocity.y += cos(spaceship.rotation) * -0.02;
             spaceship.velocity.x += sin(spaceship.rotation) * 0.02;
         }
 
-        if (keyIsPressed(sf::Keyboard::A)) {
+        if (spaceship.controls->left()) {
             spaceship.rotation -= M_PI / 32;
         }
 
-        if (keyIsPressed(sf::Keyboard::D)) {
+        if (spaceship.controls->right()) {
             spaceship.rotation += M_PI / 32;
         }
 
         spaceship.position += spaceship.velocity * (float)secondsEllapsed;
 
-        
         astroidMutex.lock();
         for (Astroid astroid : astroids) {
             if (distanceBetween(spaceship.position, astroid.getPosition()) < 20 && Collision::shapesIntersect(astroid, spaceship.polygon())) {
@@ -106,4 +103,9 @@ void Scene::drawToWindow(sf::RenderWindow* window) {
 
 Scene::Scene() {
     reset();
+    spaceship.controls = new ClientControls();
+}
+
+Scene::~Scene() {
+    delete spaceship.controls;
 }

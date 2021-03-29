@@ -1,23 +1,24 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "ClientControls.h"
 
+
 bool ClientControls::forward() {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::N);		
+	return keyIsPressed(sf::Keyboard::W);		
 }
 
 bool ClientControls::left() {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::N);		
+	return keyIsPressed(sf::Keyboard::A);		
 }
 
 bool ClientControls::right() {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::N);		
+	return keyIsPressed(sf::Keyboard::D);		
 }
 
 bool ClientControls::reset() {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::N);		
+	return keyIsPressed(sf::Keyboard::R);		
 }
 
 bool ClientControls::pause() {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
+	return keyIsPressed(sf::Keyboard::Escape);
 }
 

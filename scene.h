@@ -21,6 +21,7 @@ class Scene {
         void drawToWindow(sf::RenderWindow* window);
 		void addSpaceship(Spaceship ship);
         Scene();
+        ~Scene();
 
     protected:
         void updateSpaceship(int secondsEllapsed);

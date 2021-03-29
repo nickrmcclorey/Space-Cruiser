@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include "controls/IControls.h"
+#include "controls/ClientControls.h"
 
 class Spaceship {
     public:
@@ -11,7 +12,7 @@ class Spaceship {
 		bool destroyed = false;
 		IControls *controls;
 
-		Spaceship(){};
+		Spaceship() {};
 
 		Spaceship(IControls *controller) {
 			controls = controller;

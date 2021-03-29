@@ -20,7 +20,7 @@ menu.o : menu.h menu.cpp
 	g++ -std=c++17 -c menu.cpp
 
 controls.o : controls/*
-	g++ -std=c++17 -c controls.cpp -o controls.o
+	g++ -std=c++17 -c controls/ClientControls.cpp controls/AFKControls.cpp -o controls.o
 
 clean:
 	rm *.o space_cruiser

@@ -8,8 +8,6 @@
 #include "menu.h"
 #include "controls/ClientControls.h"
 
-#define keyIsPressed(key) (sf::Keyboard::isKeyPressed(key))
-
 
 namespace space {
 
@@ -49,7 +47,6 @@ namespace space {
         scene = new DynamicScene();
         scene->reset();
         view.setSize(1920, 1080);
-		controls = new ClientControls();
     }
 
     GameManager::~GameManager() {

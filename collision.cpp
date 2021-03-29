@@ -58,8 +58,8 @@ namespace Collision {
                     // std::cout << "getOrientation(start2, end2, start1): " << getOrientation(start2, end2, start1) << std::endl;
                     // std::cout << "getOrientation(start2, end2, end2): " << getOrientation(start2, end2, end1) << std::endl;
                     return true;
-             }
-             return false;
+        }
+        return false;
     }
 
     // https://www.geeksforgeeks.org/orientation-3-ordered-points/

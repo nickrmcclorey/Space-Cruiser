@@ -1,4 +1,7 @@
+#pragma once
 #include "IControls.h"
+
+#define keyIsPressed(key) (sf::Keyboard::isKeyPressed(key))
 
 class ClientControls : public IControls {
 	public:
